@@ -8,6 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Payments</title>
+
   </head>
   <body>
   <section class="section">
@@ -15,24 +16,19 @@
           <div class="row justify-content-center">
               <div class="col-md-6" style="background-color: #EDF1F4;">
                   <h1>Payments</h1>
-                  <form name="bookingform" id="signform"  method="post">
-                    <div class="form-group">
-                        <p>John Smith - $100</p>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-default" id="cancel-payment">Cancel Payment</button>
-                        <button type="submit" class="btn btn-primary btn-lg ml-5" id="take-payment">Take Payment</button>
-                    </div>
-                  </form>
-                  <form name="bookingform" id="signform"  method="post">
-                    <div class="form-group">
-                        <p>John Smith - $100</p>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-default" id="cancel-payment">Cancel Payment</button>
-                        <button type="submit" class="btn btn-primary btn-lg ml-5" id="take-payment">Take Payment</button>
-                    </div>
-                  </form>
+                  {% for payment in payments %}
+                    {% if payment.amount %}
+                      <form name="bookingform" id="signform-{{payment.id}}"  method="post" action="{{url_for('process_payment', payment_id=payment.id)}}">
+                        <div class="form-group">
+                            <p>{{payment.name}} - ${{payment.amount}}</p>
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" class="btn btn-default" id="cancel-payment" name="action" value="Cancel Payment">
+                            <input type="submit" class="btn btn-primary btn-lg ml-5" id="take-payment"  name="action" value="Take Payment">
+                        </div>
+                      </form>
+                  {% endif %}
+                  {% endfor %}
               </div>
           </div>
       </div>

@@ -1,24 +1,56 @@
 <!doctype html>
 <html lang="en">
-  <head>
+<head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Order Form</title>
-  </head>
-  <body>
-  <section class="section">
-      <div class="container">
-          <div class="row justify-content-center">
-              <div class="col-md-8" style="background-color: #EDF1F4;">
-                  <h1>Order Custom Widget</h1>
-                  <form name="bookingform" id="signform"  method="post" action="{{url_for('place_order')}}">
+    <style>
+    .StripeElement {
+      box-sizing: border-box;
+
+      height: 40px;
+
+      padding: 10px 12px;
+
+      border: 1px solid transparent;
+      border-radius: 4px;
+      background-color: white;
+
+      box-shadow: 0 1px 3px 0 #e6ebf1;
+      -webkit-transition: box-shadow 150ms ease;
+      transition: box-shadow 150ms ease;
+    }
+
+    .StripeElement--focus {
+      box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+
+    .StripeElement--invalid {
+      border-color: #fa755a;
+    }
+
+    .StripeElement--webkit-autofill {
+      background-color: #fefde5 !important;
+    }
+    </style>
+    <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+<section class="section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8" style="background-color: #EDF1F4;">
+                <h1>Order Custom Widget</h1>
+                <form name="bookingform" id="payment-form" method="post" action="{{url_for('place_order')}}">
                     <div class="form-group">
                         <label for="instructions">Instructions</label>
-                        <textarea class="form-control" id="instructions" name="instructions" rows="3" placeholder="Instructions..."></textarea>
+                        <textarea class="form-control" id="instructions" name="instructions" rows="3"
+                                  placeholder="Instructions..."></textarea>
                     </div>
                     <div class="form-group">
                         <label for="name">Name</label>
@@ -26,31 +58,129 @@
                     </div>
                     <div class="form-group">
                         <label for="email">Email</label>
-                        <input type="text" class="form-control" id="email" name="email" aria-describedby="emailHelpBlock" placeholder="john@test.com"/>
-                        <small id="emailHelpBlock" class="form-text text-muted">Your email will be used to notify you when the widget is ready.</small>
+                        <input type="text" class="form-control" id="email" name="email"
+                               aria-describedby="emailHelpBlock" placeholder="john@test.com"/>
+                        <small id="emailHelpBlock" class="form-text text-muted">Your email will be used to notify you
+                            when the widget is ready.
+                        </small>
                     </div>
 
                     <div class="form-group">
                         <div class="d-flex align-items-center justify-content-between">
-                            <label for="paymentInfo">Payment Information</label>
+                            <label for="card-element">Payment Information</label>
                         </div>
-                        <input type="text" class="form-control" id="paymentInfo" name="paymentInfo" aria-describedby="paymentHelpBlock"/>
-                        <small id="paymentHelpBlock" class="form-text text-muted">No payment will be taken your widget has been customised.</small>
+                        <div id="card-element"  class="form-control" >
+                            <!-- A Stripe Element will be inserted here. -->
+                        </div>
+                        <small id="paymentHelpBlock" class="form-text text-muted">No payment will be taken your widget
+                            has been customised.
+                        </small>
+                        <!-- Used to display form errors. -->
+                        <div id="card-errors" role="alert"></div>
+                    </div>
+
+                    <div class="outcome">
+                        <div class="error"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="hidden" id="amount" name="amount" value="{{amount}}">
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary btn-block mt-5 mb-4">Order Widget for $100</button>
+                        <button type="submit" class="btn btn-primary btn-block mt-5 mb-4">Order Widget for ${{amount}}</button>
                     </div>
 
-                  </form>
-              </div>
-          </div>
-      </div>
-  </section>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  </body>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+<script>
+// Create a Stripe client.
+var stripe = Stripe('{{pub_key}}');
+
+// Create an instance of Elements.
+var elements = stripe.elements();
+
+// Custom styling can be passed to options when creating an Element.
+// (Note that this demo uses a wider set of styles than the guide below.)
+var style = {
+  base: {
+    color: '#32325d',
+    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+    fontSmoothing: 'antialiased',
+    fontSize: '16px',
+    '::placeholder': {
+      color: '#aab7c4'
+    }
+  },
+  invalid: {
+    color: '#fa755a',
+    iconColor: '#fa755a'
+  }
+};
+
+// Create an instance of the card Element.
+var card = elements.create('card', {style: style});
+
+// Add an instance of the card Element into the `card-element` <div>.
+card.mount('#card-element');
+
+// Handle real-time validation errors from the card Element.
+card.addEventListener('change', function(event) {
+  var displayError = document.getElementById('card-errors');
+  if (event.error) {
+    displayError.textContent = event.error.message;
+  } else {
+    displayError.textContent = '';
+  }
+});
+
+// Handle form submission.
+var form = document.getElementById('payment-form');
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+
+  stripe.createToken(card).then(function(result) {
+    if (result.error) {
+      // Inform the user if there was an error.
+      var errorElement = document.getElementById('card-errors');
+      errorElement.textContent = result.error.message;
+    } else {
+      // Send the token to your server.
+      stripeTokenHandler(result.token);
+    }
+  });
+});
+
+// Submit the form with the token ID.
+function stripeTokenHandler(token) {
+  // Insert the token ID into the form so it gets submitted to the server
+  var form = document.getElementById('payment-form');
+  var hiddenInput = document.createElement('input');
+  hiddenInput.setAttribute('type', 'hidden');
+  hiddenInput.setAttribute('name', 'stripeToken');
+  hiddenInput.setAttribute('value', token.id);
+  form.appendChild(hiddenInput);
+
+  // Submit the form
+  form.submit();
+}
+
+</script>
+
+</body>
 </html>
