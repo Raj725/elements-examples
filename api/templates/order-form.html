@@ -15,7 +15,7 @@
           <div class="row justify-content-center">
               <div class="col-md-8" style="background-color: #EDF1F4;">
                   <h1>Order Custom Widget</h1>
-                  <form name="bookingform" id="signform"  method="post">
+                  <form name="bookingform" id="signform"  method="post" action="{{url_for('place_order')}}">
                     <div class="form-group">
                         <label for="instructions">Instructions</label>
                         <textarea class="form-control" id="instructions" name="instructions" rows="3" placeholder="Instructions..."></textarea>
