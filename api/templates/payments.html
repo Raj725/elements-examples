@@ -17,10 +17,10 @@
               <div class="col-md-6" style="background-color: #EDF1F4;">
                   <h1>Payments</h1>
                   {% for payment in payments %}
-                    {% if payment.amount %}
-                      <form name="bookingform" id="signform-{{payment.id}}"  method="post" action="{{url_for('process_payment', payment_id=payment.id)}}">
+                    {% if payment["amount"] %}
+                      <form name="bookingform" id="signform-{{payment['_id']}}"  method="post" action="{{url_for('process_payment', payment_id=payment['_id'])}}">
                         <div class="form-group">
-                            <p>{{payment.name}} - ${{payment.amount}}</p>
+                            <p>{{payment["name"]}} - ${{payment["amount"]}}</p>
                         </div>
                         <div class="form-group">
                             <input type="submit" class="btn btn-default" id="cancel-payment" name="action" value="Cancel Payment">
